@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MK OPS — GÖRÜNMEYEN YÜK · Marka Filmi (9:16 · 45 sn)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:"Inter","Segoe UI Variable Display","Segoe UI","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body.rec{cursor:none}
+#stage{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;overflow:hidden;background:#04070f}
+#stage>*{position:absolute;left:0;top:0}
+canvas#fx{width:1080px;height:1920px}
+.layer{width:1080px;height:1920px;visibility:hidden;pointer-events:none}
+#vig{width:1080px;height:1920px;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,rgba(0,0,0,0) 58%,rgba(0,0,0,.5) 100%)}
+#grain{width:1080px;height:1920px;pointer-events:none;opacity:.09;mix-blend-mode:overlay;background-size:256px 256px}
+#fade{width:1080px;height:1920px;background:#000;opacity:0;pointer-events:none}
+
+/* yazı motoru */
+.txt{position:absolute;left:0;width:1080px;text-align:center;pointer-events:none}
+.ln{white-space:nowrap;font-weight:900;color:#f2f7ff;letter-spacing:-.012em;line-height:1.02;font-family:"Inter","Segoe UI Black","Segoe UI Variable Display","Segoe UI",Arial,sans-serif}
+.ln .in{display:inline-block}
+.ch{display:inline-block;transform-origin:50% 88%;will-change:transform,opacity;text-shadow:0 8px 34px rgba(0,0,0,.55)}
+.sp{width:.27em}
+.k1{color:#19e3d0;text-shadow:0 0 38px rgba(25,227,208,.5),0 8px 30px rgba(0,0,0,.5)}
+.k2{color:#ff6b4a}
+.k3{color:#4aa3ff;text-shadow:0 0 36px rgba(31,139,255,.55),0 8px 30px rgba(0,0,0,.5)}
+
+/* küçük sinema yazıları */
+.cin{position:absolute;color:#e8eef7;font-weight:500;letter-spacing:.14em;white-space:nowrap;opacity:0;text-shadow:0 2px 20px rgba(0,0,0,.7)}
+#clockTx{left:90px;top:1590px;font-size:34px}
+#filmTitle{left:0;width:1080px;text-align:center;top:300px;font-size:44px;font-weight:300;letter-spacing:.55em;padding-left:.55em}
+#cap{left:90px;top:1520px;width:900px;text-align:center;font-size:44px;font-weight:600;color:#f4f7fb;line-height:1.25;opacity:0;text-shadow:0 3px 24px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,.8)}
+#cap i{font-style:normal;color:#19e3d0}
+
+/* telefon (dünya içinde) */
+.phone{position:absolute;left:0;top:0;width:360px;height:740px;border-radius:58px;background:#0a0c11;border:3px solid #2c3342;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 2px rgba(255,255,255,.05) inset;transform-origin:0 0;will-change:transform;display:none}
+.phone .scr{position:absolute;left:12px;top:12px;right:12px;bottom:12px;border-radius:46px;background:linear-gradient(165deg,#141b27,#090c13);overflow:hidden}
+.phone .pt{position:absolute;left:0;top:70px;width:100%;text-align:center;font-size:84px;font-weight:300;color:#eef2f8;letter-spacing:-.02em}
+.phone .pd{position:absolute;left:0;top:46px;width:100%;text-align:center;font-size:17px;font-weight:600;color:#b9c3d3}
+.phone .pn{position:absolute;left:14px;width:300px;padding:11px 13px;border-radius:22px;background:rgba(56,62,76,.9);border:1px solid rgba(255,255,255,.1);display:flex;gap:11px;align-items:center;box-shadow:0 10px 26px rgba(0,0,0,.45);will-change:transform,opacity}
+.phone .pn .ic{flex:none;width:40px;height:40px;border-radius:11px;background:linear-gradient(160deg,#3fdc74,#12a34a);position:relative}
+.phone .pn .ic:after{content:"";position:absolute;left:9px;top:11px;width:22px;height:17px;border-radius:7px;background:#fff}
+.phone .pn>div:last-child{min-width:0}.phone .pn b{display:block;font-size:14px;color:#f4f6fa;font-weight:800}
+.phone .pn span{display:block;font-size:17px;color:#e9edf5;font-weight:600;line-height:1.16;margin-top:2px}
+.phone .bdg{position:absolute;left:0;bottom:40px;width:100%;text-align:center;font-size:16px;font-weight:700;color:#ff9a8f;letter-spacing:.06em}
+
+/* S3 kesmeleri */
+#shots{filter:saturate(.62) contrast(1.08)}
+.shot{position:absolute;left:0;top:0;width:1080px;height:1920px;display:none;overflow:hidden;background:#0a0e15}
+.sheet{position:absolute;width:640px;height:860px;background:#d9dde3;border-radius:6px;box-shadow:0 30px 70px rgba(0,0,0,.6);background-image:linear-gradient(rgba(60,70,90,.28) 2px,transparent 2px),linear-gradient(90deg,rgba(60,70,90,.2) 2px,transparent 2px);background-size:100% 44px,160px 100%}
+.sheet em{position:absolute;font-family:"Segoe Print","Comic Sans MS",cursive;font-style:normal;color:#b5201c;font-size:54px;font-weight:700}
+.call{position:absolute;left:150px;top:300px;width:780px;height:1320px;border-radius:84px;background:linear-gradient(170deg,#1a2230,#0b0f17);border:4px solid #2c3342;box-shadow:0 40px 120px rgba(0,0,0,.7)}
+.call .nm{position:absolute;top:360px;left:0;width:100%;text-align:center;font-size:62px;font-weight:700;color:#f3f6fb}
+.call .sb{position:absolute;top:450px;left:0;width:100%;text-align:center;font-size:36px;color:#a5afc0;font-weight:500}
+.call .av{position:absolute;left:290px;top:130px;width:200px;height:200px;border-radius:50%;background:linear-gradient(160deg,#556073,#2a3140);display:flex;align-items:center;justify-content:center;font-size:90px;color:#dfe6f1;font-weight:700}
+.call .ans{position:absolute;bottom:130px;left:300px;width:180px;height:180px;border-radius:50%;background:#2fcf5e;display:flex;align-items:center;justify-content:center;font-size:80px;color:#fff}
+.call .rej{position:absolute;bottom:130px;left:70px;width:180px;height:180px;border-radius:50%;background:#e5443a;display:none}
+.tbl{position:absolute;left:70px;top:0;width:940px;font-family:"Consolas","Cascadia Mono","Segoe UI",monospace;font-size:40px;color:#cfd8e6}
+.tbl div{display:flex;height:96px;align-items:center;border-bottom:2px solid rgba(255,255,255,.12)}
+.tbl div span{flex:1}.tbl div span:nth-child(1){flex:0 0 340px}.tbl div span:nth-child(2){flex:0 0 240px}
+.tbl .q{color:#ff6b4a;font-weight:700}
+.win{position:absolute;background:#f4f6fa;border-radius:20px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.25);will-change:transform}
+.win img{display:block;width:100%}
+.win .bar{height:34px;background:#e9edf3}
+#cur{position:absolute;width:0;height:0;border-left:26px solid #fff;border-top:16px solid transparent;border-bottom:16px solid transparent;transform-origin:0 0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6));display:none}
+
+/* S4 / S6 */
+#mods{filter:none}
+.pnl{position:absolute;top:560px;width:900px;height:700px;border-radius:28px;overflow:hidden;background:#f1f4f9;box-shadow:0 50px 120px rgba(0,0,0,.7),0 0 100px rgba(31,139,255,.3),0 0 0 2px rgba(255,255,255,.28);will-change:transform,filter}
+.pnl img{position:absolute;left:0;top:0;transform-origin:0 0;max-width:none}
+#chip{position:absolute;left:0;top:1340px;width:1080px;text-align:center;font-size:40px;font-weight:800;letter-spacing:.3em;padding-left:.3em;color:#19e3d0;opacity:0;text-shadow:0 0 30px rgba(25,227,208,.6)}
+#tile{position:absolute;left:0;top:0;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:22%;overflow:hidden;background:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.35),0 0 90px rgba(31,139,255,.65),0 30px 80px rgba(0,0,0,.5);opacity:0;will-change:transform,opacity}
+#tile img{width:106%;height:106%;margin:-3%;display:block}
+#cta{position:absolute;left:100px;top:1330px;width:880px;height:120px;border-radius:60px;background:linear-gradient(100deg,#0b6bd6,#1f8bff 55%,#19e3d0);color:#fff;font-size:48px;font-weight:900;letter-spacing:.01em;display:none;align-items:center;justify-content:center;gap:20px;box-shadow:0 20px 80px rgba(31,139,255,.6),0 0 0 2px rgba(255,255,255,.25) inset;overflow:hidden;white-space:nowrap}
+#cta em{font-style:normal;font-size:52px}
+
+/* kontroller */
+#ui{position:fixed;left:0;bottom:0;width:100%;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;align-items:center;padding:10px 12px;background:#05080f;border-top:1px solid rgba(90,170,255,.25);z-index:10}
+#ui button,#ui label{all:unset;cursor:pointer;color:#e8f1ff;font:700 13px/1 "Segoe UI",Arial,sans-serif;padding:9px 12px;border-radius:10px;background:rgba(90,170,255,.16);white-space:nowrap}
+#ui button:hover,#ui label:hover{background:rgba(90,170,255,.34)}
+#ui button.on,#ui label.on{background:rgba(25,227,208,.35)}
+#ui input[type=range]{width:min(46vw,380px);accent-color:#19e3d0}
+#ui span.tm{color:#9fc4ff;font:700 13px "Segoe UI",Arial,sans-serif;min-width:96px;text-align:center}
+#scn{position:relative;width:100%;height:26px;display:flex;gap:2px}
+#scn i{flex:none;height:26px;border-radius:5px;background:rgba(90,170,255,.2);color:#cfe3ff;font:600 10px/26px "Segoe UI",Arial,sans-serif;text-align:center;overflow:hidden;white-space:nowrap;cursor:pointer;font-style:normal}
+#scn i.cur{background:rgba(25,227,208,.45)}
+body.hideui #ui,body.hideui #hint{display:none}
+@media (max-width:700px){#hint{display:none}#ui{gap:6px;padding:6px 8px;flex-wrap:nowrap}#ui button{font-size:13px;padding:9px 10px}#ui #seek,#ui #tm,#ui #scn,#ui #bHide,#ui #bCap,#ui #bTts{display:none}}
+#hint{position:fixed;left:0;top:0;width:100%;padding:8px 12px;text-align:center;background:#05080f;border-bottom:1px solid rgba(90,170,255,.2);color:#7fa3d6;font:600 12px "Segoe UI",Arial,sans-serif;z-index:10}
+#st{position:fixed;left:0;top:0;white-space:pre;color:#8f8;font:12px monospace;z-index:20}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="fx" width="1080" height="1920"></canvas>
+  <div id="world" class="layer"><div class="phone" id="phone"><div class="scr"><div class="pd">Salı</div><div class="pt">06:52</div><div id="pns"></div><div class="bdg" id="pbd"></div></div></div></div>
+  <div id="shots" class="layer"></div>
+  <div id="mods" class="layer"><div id="mstrip"></div><div id="chip"></div></div>
+  <div id="txtl" class="layer"></div>
+  <div id="final" class="layer"><div id="cta"><span>48 SAAT ÜCRETSİZ DENEYİN</span><em>→</em></div></div>
+  <div id="cin" class="layer"><div class="cin" id="clockTx"></div><div class="cin" id="filmTitle">GÖRÜNMEYEN YÜK</div></div>
+  <div id="vig"></div>
+  <div id="hud" class="layer"><div id="tile"><img alt="MK OPS" src="assets/logo.png"></div></div>
+  <div id="cap"></div>
+  <div id="grain"></div>
+  <div id="fade"></div>
+</div>
+<div id="hint">Boşluk: oynat/duraklat · R: yeniden başlat · H: temiz mod · K: kayıt modu · F: tam ekran · M: ses · C: altyazı</div>
+<div id="ui">
+  <div id="scn"></div>
+  <button id="bPlay">⏸ Duraklat</button>
+  <button id="bRestart">↺ Yeniden</button>
+  <input id="seek" type="range" min="0" max="45" step="0.01" value="0">
+  <span class="tm" id="tm">0.0 / 45.0 sn</span>
+  <button id="bSnd">🔇 Ses kapalı</button>
+  <button id="bCap">Altyazı (dış ses metni)</button>
+  <button id="bTts">Taslak dış ses</button>
+  <button id="bHide">Temiz mod (H)</button>
+  <button id="bRec">● Kayıt (K)</button>
+  <button id="bFs">⛶</button>
+</div>
+<pre id="st"></pre>
+<script>
+"use strict";

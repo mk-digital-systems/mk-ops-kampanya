@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MK OPS — Reklam Filmi · Bölüm 3: Durum ne? Tek bakışta. (9:16 · 25 sn)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:"Inter","Segoe UI Variable Display","Segoe UI","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body.rec{cursor:none}
+#stage{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;overflow:hidden;background:#04070f}
+#stage>*{position:absolute;left:0;top:0}
+canvas#fx{width:1080px;height:1920px}
+.scene{width:1080px;height:1920px;will-change:opacity,transform;visibility:hidden}
+#vig{width:1080px;height:1920px;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,rgba(0,0,0,0) 66%,rgba(0,0,0,.3) 100%)}
+#grain{width:1080px;height:1920px;pointer-events:none;opacity:.07;mix-blend-mode:overlay;background-size:256px 256px}
+
+/* ---- kinetik yazı ---- */
+.txt{position:absolute;left:0;width:1080px;text-align:center;pointer-events:none}
+.ln{white-space:nowrap;font-weight:900;color:#f2f7ff;letter-spacing:-.012em;line-height:1.02;font-family:"Inter","Segoe UI Black","Segoe UI Variable Display","Segoe UI",Arial,sans-serif}
+.ln .in{display:inline-block}
+.ch{display:inline-block;transform-origin:50% 88%;will-change:transform,opacity;text-shadow:0 8px 34px rgba(0,0,0,.55)}
+.sp{width:.27em}
+.k1{color:#19e3d0;text-shadow:0 0 38px rgba(25,227,208,.55),0 8px 30px rgba(0,0,0,.5)}
+.k2{color:#ff6b4a;text-shadow:0 0 34px rgba(255,90,60,.42),0 8px 30px rgba(0,0,0,.5)}
+.k3{color:#4aa3ff;text-shadow:0 0 36px rgba(31,139,255,.55),0 8px 30px rgba(0,0,0,.5)}
+.sm .ln{font-weight:800}
+
+/* ---- sahne 1 kaos ---- */
+.it{position:absolute;left:0;top:0;will-change:transform,opacity;display:none}
+.bub{width:max-content;max-width:560px;padding:20px 26px 16px;border-radius:26px 26px 26px 6px;background:#10261f;border:1px solid rgba(120,255,190,.15);color:#d9f7e8;font-size:34px;font-weight:600;line-height:1.25;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.bub b{display:block;font-size:24px;font-weight:800;margin-bottom:6px;color:#5ee6a3}
+.bub i{display:block;text-align:right;font-style:normal;font-size:20px;opacity:.55;margin-top:6px}
+.sheet{width:440px;border-radius:14px;background:#0e1a15;border:1px solid rgba(80,220,140,.25);overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.sheet .sh{background:#1a6b40;color:#e6fff0;font-size:23px;font-weight:700;padding:12px 18px;white-space:nowrap}
+.sheet .cells{position:relative;height:240px;background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);background-size:55px 30px}
+.sheet .cells u{position:absolute;width:55px;height:30px;background:rgba(255,80,60,.55)}
+.sheet .cells s{position:absolute;width:110px;height:30px;background:rgba(255,200,60,.35)}
+.note{width:300px;padding:26px 24px;background:#e9dfb5;color:#4a3d1c;font-family:"Segoe Print","Comic Sans MS",cursive;font-size:36px;font-weight:700;line-height:1.2;box-shadow:0 20px 50px rgba(0,0,0,.5);white-space:pre}
+#badge{left:880px;top:120px;width:150px;height:150px;margin:0;border-radius:50%;background:#ff3b30;color:#fff;font-weight:900;font-size:62px;display:none;align-items:center;justify-content:center;box-shadow:0 0 0 12px rgba(255,59,48,.22),0 20px 60px rgba(255,59,48,.5)}
+#badgeL{left:800px;top:290px;width:310px;text-align:center;color:#ffb3ab;font-size:28px;font-weight:700;letter-spacing:.04em;display:none}
+#scrim1{width:1080px;height:1920px;background:radial-gradient(ellipse 75% 24% at 50% 49%,rgba(3,6,14,.92),rgba(3,6,14,0) 100%)}
+
+/* ---- HUD ---- */
+#hud{width:1080px;height:1920px;pointer-events:none}
+#tile{position:absolute;left:0;top:0;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:22%;overflow:hidden;background:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.35),0 0 90px rgba(31,139,255,.65),0 30px 80px rgba(0,0,0,.5);opacity:0;will-change:transform,opacity}
+#tile img{width:106%;height:106%;margin:-3%;display:block}
+
+/* ---- ikinci bölüm: gerçek ekranlar ---- */
+#s4>*,#s5>*{position:absolute;left:0;top:0}
+.win{border-radius:22px;background:#f6f8fb;overflow:hidden;box-shadow:0 50px 110px rgba(0,0,0,.65),0 0 90px rgba(31,139,255,.30),0 0 0 1px rgba(255,255,255,.35);will-change:transform,opacity,filter;transform-origin:50% 50%}
+.win .bar{position:relative;height:44px;background:#edf1f7;border-bottom:1px solid #d9e1ec}
+.win .bar i{position:absolute;top:15px;width:14px;height:14px;border-radius:50%}
+.win .bar span{position:absolute;left:104px;top:7px;height:30px;line-height:30px;padding:0 18px;border-radius:15px;background:#fff;color:#51607a;font-size:18px;font-weight:700}
+.win img{display:block;width:100%}
+.win .gl{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;background:linear-gradient(105deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.55) 50%,rgba(255,255,255,0) 62%);transform:translateX(-130%)}
+.pill{position:absolute;left:0;top:0;display:flex;align-items:center;gap:14px;padding:9px 26px 9px 10px;border-radius:40px;background:#fff;color:#0a1630;font-size:34px;font-weight:800;white-space:nowrap;box-shadow:0 14px 40px rgba(0,0,0,.45),0 0 0 3px rgba(31,139,255,.25);will-change:transform,opacity;opacity:0}
+.pill b{width:42px;height:42px;border-radius:50%;background:#0b6bd6;color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center}
+#chips{left:0;top:1420px;width:1080px;display:flex;justify-content:center;gap:12px}
+.chip{position:relative;padding:13px 22px;border-radius:40px;background:rgba(14,34,74,.85);border:2px solid rgba(90,170,255,.45);color:#eaf4ff;font-size:31px;font-weight:800;white-space:nowrap;opacity:0;will-change:transform}
+#cta{left:100px;top:1320px;width:880px;height:120px;border-radius:60px;background:linear-gradient(100deg,#0b6bd6,#1f8bff 55%,#19e3d0);color:#fff;font-size:46px;font-weight:900;letter-spacing:.01em;display:none;align-items:center;justify-content:center;gap:20px;box-shadow:0 20px 80px rgba(31,139,255,.6),0 0 0 2px rgba(255,255,255,.25) inset;overflow:hidden;white-space:nowrap}
+#cta em{font-style:normal;font-size:52px}
+#cta .sh{position:absolute;top:0;left:-30%;width:25%;height:100%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));transform:skewX(-20deg)}
+
+/* ---- bölüm 3: kilit ekranı + soru/cevap ---- */
+#nts{position:absolute;left:0;top:0}
+#dt{left:0;top:92px;width:1080px;text-align:center;font-size:44px;font-weight:600;color:#c9d0dc;letter-spacing:.01em}
+#clk{left:0;top:150px;width:1080px;text-align:center;font-size:250px;font-weight:300;color:#f1f4fa;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 10px 60px rgba(0,0,0,.5)}
+.nt{position:absolute;left:60px;top:0;width:960px;padding:26px 30px;border-radius:44px;background:rgba(40,44,54,.8);border:1px solid rgba(255,255,255,.13);box-shadow:0 24px 60px rgba(0,0,0,.5);display:flex;gap:26px;align-items:center;will-change:transform,opacity;display:none}
+.nt .ic{flex:none;width:92px;height:92px;border-radius:24px;background:linear-gradient(160deg,#3fdc74,#12a34a);position:relative}
+.nt .ic:after{content:"";position:absolute;left:21px;top:24px;width:50px;height:38px;border-radius:15px;background:#fff}
+.nt .ic:before{content:"";position:absolute;left:25px;top:55px;width:14px;height:14px;background:#fff;transform:skewY(30deg);border-radius:0 0 0 6px;z-index:1}
+.nt .tx{flex:1;min-width:0}
+.nt .nm{display:flex;justify-content:space-between;font-size:34px;font-weight:800;color:#f4f6fa}
+.nt .nm i{font-style:normal;font-weight:500;font-size:28px;color:#9aa3b2}
+.nt .ms{font-size:43px;font-weight:600;color:#e9edf5;margin-top:4px;line-height:1.15}
+.mon{position:absolute;left:60px;top:560px;width:960px;height:840px;border-radius:30px;overflow:hidden;background:#f1f4f9;box-shadow:0 50px 120px rgba(0,0,0,.7),0 0 100px rgba(31,139,255,.35),0 0 0 2px rgba(255,255,255,.3);display:none;will-change:transform,opacity,filter}
+.mon img{position:absolute;left:0;top:0;transform-origin:0 0;max-width:none;will-change:transform,filter}
+.mon svg{position:absolute;left:0;top:0;overflow:visible}
+.mon .gl{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;background:linear-gradient(105deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.5) 50%,rgba(255,255,255,0) 62%);transform:translateX(-130%)}
+.ans{position:absolute;left:0;top:1452px;width:1080px;display:none;justify-content:center}
+.apill{display:flex;align-items:center;gap:20px;padding:14px 50px 14px 16px;border-radius:70px;background:#19e3d0;color:#04142e;font-size:60px;font-weight:900;letter-spacing:.01em;box-shadow:0 0 70px rgba(25,227,208,.55),0 20px 50px rgba(0,0,0,.45);white-space:nowrap}
+.apill b{width:74px;height:74px;border-radius:50%;background:#04142e;color:#19e3d0;display:flex;align-items:center;justify-content:center;font-size:44px}
+.asub{position:absolute;left:0;top:1590px;width:1080px;text-align:center;font-size:44px;font-weight:600;color:#bcd6ff;opacity:0}
+#cta{top:1220px}
+
+/* ---- kontroller ---- */
+#ui{position:fixed;left:0;bottom:0;width:100%;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;align-items:center;padding:10px 12px;background:#05080f;border-top:1px solid rgba(90,170,255,.25);z-index:10}
+#ui button{all:unset;cursor:pointer;color:#e8f1ff;font:700 14px/1 "Segoe UI",Arial,sans-serif;padding:10px 14px;border-radius:10px;background:rgba(90,170,255,.16);white-space:nowrap}
+#ui button:hover{background:rgba(90,170,255,.34)}
+#ui input{width:min(34vw,260px);accent-color:#19e3d0}
+#ui span{color:#9fc4ff;font:700 13px "Segoe UI",Arial,sans-serif;min-width:78px;text-align:center}
+body.hideui #ui,body.hideui #hint{display:none}
+@media (max-width:700px){#hint{display:none}#ui{gap:6px;padding:6px 8px;flex-wrap:nowrap}#ui button{font-size:13px;padding:9px 10px}#ui #seek,#ui #tm,#ui #scn,#ui #bHide,#ui #bCap,#ui #bTts{display:none}}
+#hint{position:fixed;left:0;top:0;width:100%;padding:8px 12px;text-align:center;background:#05080f;border-bottom:1px solid rgba(90,170,255,.2);color:#7fa3d6;font:600 12px "Segoe UI",Arial,sans-serif;z-index:10}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="fx" width="1080" height="1920"></canvas>
+  <div id="s1" class="scene"><div id="dt">Salı, 14 Ekim</div><div id="clk">06:12</div><div id="nts"></div></div>
+  <div id="s2" class="scene"></div>
+  <div id="s3" class="scene"></div>
+  <div id="s4" class="scene">
+    <div id="cta"><span>48 SAAT ÜCRETSİZ DENEYİN</span><em>→</em><div class="sh"></div></div>
+  </div>
+  <div id="vig"></div>
+  <div id="hud"><div id="tile"><img alt="MK OPS" src="{{LOGO}}"></div></div>
+  <div id="grain"></div>
+</div>
+
+<div id="hint">Boşluk: oynat/duraklat · R: yeniden başlat · H: kontrolleri gizle · K: kayıt modu · F: tam ekran</div>
+<div id="ui">
+  <button id="bPlay">⏸ Duraklat</button>
+  <button id="bRestart">↺ Yeniden</button>
+  <input id="seek" type="range" min="0" max="25" step="0.01" value="0">
+  <span id="tm">0.0 / 25.0 sn</span>
+  <button id="bHide">Kontrolleri gizle (H)</button>
+  <button id="bRec">● Kayıt modu (K)</button>
+  <button id="bFs">⛶</button>
+</div>
+
+<script>
+"use strict";
+/* ============================================================
+   MK OPS — 25 sn reklam. Tüm animasyon tek bir zaman değeri (t)
+   üzerinden hesaplanır; oynat/duraklat/sar hepsi aynı çizimi verir.
+   ============================================================ */
+const W=1080,H=1920,DUR=25;
+const FONT='"Inter","Segoe UI Variable Display","Segoe UI",Arial,sans-serif';
+const $=s=>document.querySelector(s);
+const clamp=(x,a=0,b=1)=>x<a?a:x>b?b:x;
+const prog=(t,a,b)=>clamp((t-a)/(b-a));
+const lerp=(a,b,u)=>a+(b-a)*u;
+const eOut=u=>1-Math.pow(1-u,3), eIn=u=>u*u*u;
+const eIO=u=>u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;
+const eExp=u=>u>=1?1:1-Math.pow(2,-10*u);
+const sm=u=>u*u*(3-2*u);
+const spring=p=>p<=0?0:1-Math.exp(-6.5*p)*Math.cos(15*p);
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const R=mulberry(20251);
+const mixc=(a,b,u)=>`rgb(${a.map((v,i)=>Math.round(lerp(v,b[i],u))).join(',')})`;
+
+/* ---------------- kinetik yazı motoru ---------------- */
+function buildText(host,spec){
+  const el=document.createElement('div');el.className='txt'+(spec.cls?' '+spec.cls:'');
+  el.style.top=(spec.top||0)+'px';host.appendChild(el);
+  const chars=[];let k=0;const ins=[];
+  spec.lines.forEach((ln,li)=>{
+    const d=document.createElement('div');d.className='ln';d.style.fontSize='100px';
+    const inn=document.createElement('span');inn.className='in';d.appendChild(inn);el.appendChild(d);ins.push(inn);
+    ln.segs.forEach(([txt,cls])=>{for(const ch of txt){
+      const s=document.createElement('span');s.className='ch'+(cls?' '+cls:'');
+      if(ch===' '){s.className+=' sp'}else{s.textContent=ch}
+      inn.appendChild(s);chars.push({el:s,li,k:k++,sp:ch===' ',r:R(),c:''});
+    }});
+  });
+  spec.lines.forEach((ln,li)=>{
+    const d=el.children[li];const w=ins[li].offsetWidth||1;
+    const fs=Math.min(ln.max||200,100*(spec.maxW||940)/w);
+    d.style.fontSize=fs.toFixed(1)+'px';ln._fs=fs;ln._w=w*fs/100;
+    if(ln.lh)d.style.lineHeight=ln.lh;
+  });
+  return {el,chars,spec,n:k,ins};
+}
+function runText(tx,t,t0,o){
+  o=o||{};const st=o.st==null?.04:o.st,ex=o.ex,exSt=o.exSt==null?.01:o.exSt,exMode=o.exMode||'fall';
+  const endT=ex==null?1e9:ex+tx.n*exSt+.9;
+  if(t<t0||t>endT){tx.el.style.display='none';return false}
+  tx.el.style.display='block';
+  for(const c of tx.chars){
+    if(c.sp)continue;
+    const ln=tx.spec.lines[c.li];const mode=ln.mode||'drop';
+    const p=t-(t0+c.k*st);
+    let y=0,sx=1,sy=1,rot=0,op=0,bl=0,sc=1;
+    if(p>0){
+      op=1;
+      if(mode==='drop'){
+        const fd=.34+c.r*.1;
+        if(p<fd){const u=p/fd;y=-(1-u*u)*(1500+c.r*300);sy=1.28;sx=.84;rot=(c.r-.5)*10*(1-u);bl=(1-u)*3}
+        else{const q=p-fd;const e=Math.exp(-8*q)*Math.cos(22*q);sy=1-.4*e;sx=1+.24*e;y=-Math.abs(Math.sin(q*13))*Math.exp(-6*q)*34}
+      }else if(mode==='grow'){
+        sc=spring(p);op=clamp(p*9);bl=(1-clamp(p*5))*10;
+      }else if(mode==='shrink'){
+        sc=1+2.6*Math.exp(-8.5*p)*Math.cos(8*p);op=clamp(p*12);bl=13*Math.exp(-13*p);
+      }else{ y=(1-eOut(clamp(p/.5)))*70;op=clamp(p*4);bl=(1-clamp(p*3))*8 }
+    }
+    if(ex!=null){
+      const q=t-(ex+c.k*exSt);
+      if(q>0){
+        if(exMode==='fall'){y+=q*q*2900;sy*=1+q*1.1;rot+=(c.r-.5)*34*q;op*=1-clamp(q/.4)}
+        else{const u=clamp(q/.42);sc*=1-eIn(u);op*=1-u}
+      }
+    }
+    const s=`translate3d(0,${y.toFixed(1)}px,0) rotate(${rot.toFixed(1)}deg) scale(${(sx*sc).toFixed(3)},${(sy*sc).toFixed(3)})`;
+    const key=s+'|'+op.toFixed(2)+'|'+(bl>.4?bl.toFixed(1):0);
+    if(c.c!==key){c.c=key;const e=c.el.style;e.transform=s;e.opacity=op.toFixed(3);e.filter=bl>.4?`blur(${bl.toFixed(1)}px)`:'none'}
+  }
+  return true;
+}
+const L=(text,cls)=>[[text,cls||'']];
+
+const NS_='http://www.w3.org/2000/svg';
+/* ================= BÖLÜM 3 — "Durum ne? Tek bakışta." =================
+   Akış: kilit ekranı (POV) → DURUM NE? → sessizlik → MK OPS → 3 soru / 3 sinematik cevap → kapanış */
+const SRC={logo:'{{LOGO}}',puantaj:'{{PUANTAJ3}}',dash:'{{DASH3}}',stok:'{{STOK3}}'};
+const rn=mulberry(33);
+
+/* ---------- 1) kilit ekranı ---------- */
+const NT=[
+ [.5,'Usta Mehmet','Abi bugün kaç kişi geldi?'],
+ [1.1,'Muhasebe','Hakediş ne kadar oldu?'],
+ [1.65,'Şantiye Şefi','Araç şu an nerede?'],
+ [2.1,'Depocu','Boru stokta var mı?'],
+ [2.5,'Müteahhit','İş ne kadar ilerledi?'],
+ [2.85,'Usta Mehmet','Kim izinli bugün?'],
+ [3.15,'Muhasebe','Puantaj son hali hangisi?'],
+ [3.4,'Patron','Durum ne?'],
+ [3.6,'Patron','Durum ne???']].map(([ts,n,m],i)=>({ts,n,m,i,r:rn(),sg:rn()<.5?-1:1}));
+NT.forEach(o=>{const el=document.createElement('div');el.className='nt';el.innerHTML=`<div class="ic"></div><div class="tx"><div class="nm"><span>${o.n}</span><i>şimdi</i></div><div class="ms">${o.m}</div></div>`;$('#nts').appendChild(el);o.el=el});
+const clk=$('#clk');
+const SLAM=buildText($('#s1'),{top:620,lines:[{segs:L('DURUM'),max:300,mode:'drop',lh:.95},{segs:L('NE?','k2'),max:360,mode:'shrink',lh:.95}]});
+function renderLock(t){
+  let sx=Math.sin(t*1.7)*3,sy=Math.cos(t*1.3)*3;
+  NT.forEach(o=>{const q=t-o.ts;if(q>0&&q<.5){const a=Math.exp(-9*q)*Math.sin(60*q);sx+=a*11*o.sg;sy+=a*6}});
+  const tm=lerp(372,1427,eIO(prog(t,.3,3.9))),hh=Math.floor(tm/60)%24,mm=Math.floor(tm%60);
+  clk.textContent=String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0');
+  NT.forEach(o=>{
+    const q=t-o.ts;if(q<0){o.el.style.display='none';return}
+    let rank=0;NT.forEach(p=>{if(p.i>o.i)rank+=eOut(prog(t,p.ts,p.ts+.35))});
+    const u=eOut(prog(q,0,.45));
+    let x=0,y=330+rank*168-(1-u)*260,rot=0,op=clamp(q*7)*(1-clamp((rank-4.5)*.9))*(1-.65*prog(t,3.7,4.0));
+    const b=t-(5.1+o.r*.12);if(b>0){y+=b*b*4200;x=(o.r-.5)*1200*b;rot=(o.r-.5)*60*b;op*=1-clamp(b/.45)}
+    o.el.style.display=op<=.01?'none':'flex';
+    o.el.style.opacity=op.toFixed(3);
+    o.el.style.transform=`translate(${(x).toFixed(1)}px,${y.toFixed(1)}px) rotate(${rot.toFixed(1)}deg) scale(${(.94+.06*u).toFixed(3)})`;
+  });
+  runText(SLAM,t,3.75,{st:.06,ex:5.0,exSt:.03,exMode:'fall'});
+  return [sx,sy];
+}
+
+/* ---------- 2) sessizlik + marka ---------- */
+const ASK=buildText($('#s2'),{top:640,lines:[{segs:L('CEVAP'),max:190,mode:'grow',lh:1},{segs:L('HEP AYNI YERDE','k1'),max:110,mode:'drop',lh:1.05},{segs:L('OLSAYDI?'),max:190,mode:'shrink',lh:1}]});
+const WM=buildText($('#hud'),{top:0,maxW:780,lines:[{segs:L('MK OPS'),max:260,mode:'shrink',lh:1}]});
+WM.el.style.transformOrigin='540px 50%';
+const WMF=WM.spec.lines[0]._fs,WMW=WM.spec.lines[0]._w;
+const SUB=buildText($('#s2'),{top:1120,lines:[
+  {segs:L('ŞANTİYE VE OPERASYON'),max:62,mode:'rise',lh:1.1},
+  {segs:L('YÖNETİM PLATFORMU','k1'),max:62,mode:'rise',lh:1.1}]});
+const tile=$('#tile');
+function hudState(t){
+  const A={tx:540,ty:700,ts:1,wx:540,wy:1010,ws:1};
+  const Hd={tx:112,ty:100,ts:.34,wx:182+WMW*(64/WMF)/2,wy:104,ws:64/WMF};
+  const C={tx:540,ty:860,ts:.5,wx:540,wy:1020,ws:108/WMF};
+  const u1=eIO(prog(t,8.9,9.5)),u2=eIO(prog(t,19.7,20.5)),o={};
+  for(const k in A)o[k]=lerp(lerp(A[k],Hd[k],u1),C[k],u2);
+  return o;
+}
+
+/* ---------- 3) üç soru, üç cevap: kamera panele dalar ---------- */
+const V={w:960,h:840};
+const QS=[
+ {t0:9.4,t1:12.8,src:'puantaj',iw:2272,ih:1568,tg:[0,0,1100,700],hl:[17,100,1100,700],
+  q:[['KAÇ KİŞİ','','drop',130],['ÇALIŞTI?','k3','shrink',170]],a:['PUANTAJ','Kim geldi, kim izinli — tek tabloda.']},
+ {t0:12.8,t1:16.2,src:'dash',iw:2020,ih:1470,tg:[1160,530,1960,770],hl:[1316,577,1905,720],
+  q:[['HAKEDİŞ','','grow',150],['NE KADAR?','k1','drop',150]],a:['HAKEDİŞ','Günlük, haftalık, dönemlik. Anlık.']},
+ {t0:16.2,t1:19.6,src:'stok',iw:2340,ih:1520,tg:[1100,700,2000,900],hl:[1344,766,1936,833],
+  q:[['MALZEME','','shrink',150],['NEREDE?','k3','drop',150]],a:['DEPO & STOK','Hangi depoda, ne kadar — hepsi kayıtta.']}];
+QS.forEach(Q=>{
+  Q.tx=buildText($('#s3'),{top:190,lines:Q.q.map(([tx,cls,mode,max])=>({segs:L(tx,cls),max,mode,lh:1}))});
+  const mon=document.createElement('div');mon.className='mon';
+  const im=new Image();im.src=SRC[Q.src];im.style.width=Q.iw+'px';im.style.height=Q.ih+'px';mon.appendChild(im);
+  Q.s0=V.w/Q.iw;const tw=Q.tg[2]-Q.tg[0],th=Q.tg[3]-Q.tg[1];
+  Q.s1=Math.min(V.w*.9/tw,V.h*.9/th);
+  Q.c0=[Q.iw/2,Q.ih/2];Q.c1=[clamp((Q.tg[0]+Q.tg[2])/2,V.w/(2*Q.s1),Q.iw-V.w/(2*Q.s1)),clamp((Q.tg[1]+Q.tg[3])/2,V.h/(2*Q.s1),Q.ih-V.h/(2*Q.s1))];
+  const tx1=V.w/2-Q.c1[0]*Q.s1,ty1=V.h/2-Q.c1[1]*Q.s1,pad=12;
+  const sv=document.createElementNS(NS_,'svg');sv.setAttribute('width',V.w);sv.setAttribute('height',V.h);
+  Q.rect=document.createElementNS(NS_,'rect');
+  const hx=tx1+Q.hl[0]*Q.s1-pad,hy=ty1+Q.hl[1]*Q.s1-pad,hw=(Q.hl[2]-Q.hl[0])*Q.s1+pad*2,hh=(Q.hl[3]-Q.hl[1])*Q.s1+pad*2;
+  for(const [k,v] of Object.entries({x:hx,y:hy,width:hw,height:hh,rx:18,pathLength:1,fill:'rgba(47,140,255,0)',stroke:'#2f8cff','stroke-width':6}))Q.rect.setAttribute(k,v);
+  Q.rect.style.cssText='filter:drop-shadow(0 0 10px rgba(47,140,255,.95));stroke-dasharray:1;stroke-dashoffset:1';
+  sv.appendChild(Q.rect);mon.appendChild(sv);
+  Q.gl=document.createElement('div');Q.gl.className='gl';mon.appendChild(Q.gl);
+  $('#s3').appendChild(mon);Q.mon=mon;Q.im=im;
+  Q.ans=document.createElement('div');Q.ans.className='ans';Q.ans.innerHTML=`<div class="apill"><b>✓</b>${Q.a[0]}</div>`;$('#s3').appendChild(Q.ans);Q.pill=Q.ans.firstChild;
+  Q.sub=document.createElement('div');Q.sub.className='asub';Q.sub.textContent=Q.a[1];$('#s3').appendChild(Q.sub);
+});
+function renderQ(t){
+  QS.forEach(Q=>{
+    const lt=t-Q.t0,on=t>=Q.t0-.01&&t<Q.t1+.45;
+    Q.mon.style.display=on?'block':'none';
+    if(!on){Q.tx.el.style.display='none';Q.ans.style.display='none';Q.sub.style.opacity=0;return}
+    const u=eOut(eOut(prog(lt,0,.7))),e=eIO(prog(t,Q.t1-.3,Q.t1+.1)),bl0=(1-u)*8+e*6;
+    Q.mon.style.opacity=(clamp(u*3)*(1-e)).toFixed(3);
+    Q.mon.style.transform=`perspective(1700px) translate3d(${((1-u)*900-e*900).toFixed(1)}px,0,0) rotateY(${((1-u)*-20+e*16).toFixed(2)}deg)`;
+    Q.mon.style.filter=bl0>.3?`blur(${bl0.toFixed(1)}px)`:'none';
+    const cu=eIO(prog(lt,.45,1.8)),s=Q.s0*Math.pow(Q.s1/Q.s0,cu),cx=lerp(Q.c0[0],Q.c1[0],cu),cy=lerp(Q.c0[1],Q.c1[1],cu);
+    Q.im.style.transform=`translate(${(V.w/2-cx*s).toFixed(2)}px,${(V.h/2-cy*s).toFixed(2)}px) scale(${s.toFixed(4)})`;
+    const mb=2.6*Math.sin(Math.PI*cu);Q.im.style.filter=mb>.4?`blur(${mb.toFixed(1)}px)`:'none';
+    Q.rect.style.strokeDashoffset=1-eOut(prog(lt,1.9,2.25));
+    Q.rect.setAttribute('fill',`rgba(47,140,255,${(.1*eOut(prog(lt,2.0,2.4))).toFixed(3)})`);
+    Q.gl.style.transform=`translateX(${lerp(-130,130,prog(lt,1.7,2.5)).toFixed(1)}%)`;
+    runText(Q.tx,t,Q.t0+.05,{st:.03,ex:Q.t1-.3,exSt:.01,exMode:'fall'});
+    const ps=spring((lt-2.1)*2.2),ga=1-e;
+    Q.ans.style.display=ps>0?'flex':'none';Q.pill.style.transform=`scale(${Math.max(ps,.001).toFixed(3)})`;Q.ans.style.opacity=(clamp(ps*3)*ga).toFixed(3);
+    Q.sub.style.opacity=(clamp((lt-2.3)*4)*ga).toFixed(3);Q.sub.style.transform=`translateY(${((1-eOut(prog(lt,2.3,2.7)))*20).toFixed(1)}px)`;
+  });
+}
+
+/* ---------- 4) kapanış ---------- */
+const TAG=buildText($('#s4'),{top:300,lines:[{segs:L('DURUM NE?'),max:150,mode:'drop',lh:1},{segs:L('TEK BAKIŞTA.','k1'),max:200,mode:'shrink',lh:1.02}]});
+const UR=buildText($('#s4'),{top:1420,lines:[{segs:L('mk-ops.tr'),max:120,mode:'drop',lh:1}]});
+const cta=$('#cta'),ctaSh=cta.querySelector('.sh');
+
+/* ---------- arka plan: sıcak/sert → soğuk/net ---------- */
+const fx=$('#fx'),c0=fx.getContext('2d');
+const streams=[],dust=[];
+for(let i=0;i<24;i++)streams.push({x:30+R()*1020,sp:.1+R()*.22,off:R(),len:160+R()*260,w:1+R()*2});
+for(let i=0;i<70;i++)dust.push({x:R()*W,y:R()*H,sp:8+R()*30,ph:R()*6,r:1+R()*2.4});
+function drawFX(t){
+  const c=c0,m=sm(prog(t,5.2,7.6));
+  let g=c.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,mixc([12,6,6],[3,8,22],m));g.addColorStop(.55,mixc([30,14,10],[8,26,62],m));g.addColorStop(1,mixc([8,4,5],[3,10,26],m));
+  c.fillStyle=g;c.fillRect(0,0,W,H);
+  const orb=(x,y,r,col,a)=>{if(a<=0)return;const q=c.createRadialGradient(x,y,0,x,y,r);q.addColorStop(0,`rgba(${col},${a})`);q.addColorStop(1,`rgba(${col},0)`);c.fillStyle=q;c.fillRect(x-r,y-r,r*2,r*2)};
+  orb(540,40,950,'255,150,70',.17*(1-m));
+  orb(540,1750,820,'255,70,50',.10*(1-m));
+  orb(300+120*Math.sin(t*.3),520+80*Math.cos(t*.2),760,'31,139,255',.30*m);
+  orb(830+90*Math.cos(t*.25),1350+90*Math.sin(t*.3),720,'25,227,208',.20*m);
+  if(m>0){
+    const hy=1060;c.lineWidth=2;
+    for(let k=0;k<16;k++){const z=((k+((t*.55)%1))/16),y=hy+(H-hy)*z*z;c.strokeStyle=`rgba(80,170,255,${.2*m*z*1.4})`;c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke()}
+    for(let i=-14;i<=14;i++){c.strokeStyle=`rgba(80,170,255,${.16*m})`;c.beginPath();c.moveTo(540+i*34,hy);c.lineTo(540+i*150,H);c.stroke()}
+    const sa=(.16+.45)*m;
+    streams.forEach(s=>{const yh=((t*s.sp+s.off)%1)*(H+700)-200;const q=c.createLinearGradient(0,yh-s.len,0,yh);q.addColorStop(0,'rgba(25,227,208,0)');q.addColorStop(1,`rgba(25,227,208,${sa})`);c.strokeStyle=q;c.lineWidth=s.w;c.beginPath();c.moveTo(s.x,yh-s.len);c.lineTo(s.x,yh);c.stroke();c.fillStyle=`rgba(25,227,208,${Math.min(1,sa*1.6)})`;c.beginPath();c.arc(s.x,yh,s.w+1,0,6.283);c.fill()});
+  }
+  dust.forEach(d=>{const y=((d.y-t*d.sp)%H+H)%H,x=d.x+Math.sin(t*.4+d.ph)*30;c.fillStyle=`rgba(${m>.5?'200,225,255':'255,215,180'},${.1+.2*Math.abs(Math.sin(t*.8+d.ph))})`;c.beginPath();c.arc(x,y,d.r,0,6.283);c.fill()});
+  // DURUM NE? anında kırmızı baskı
+  if(t>3.6&&t<5.2){const a=.2*(.6+.4*Math.sin(t*22))*(1-prog(t,4.9,5.2));orb(540,960,1300,'255,50,40',a)}
+  const hs=hudState(t);
+  if(t>7.5){const a=.5*clamp((t-7.5)*3);orb(hs.tx,hs.ty,Math.max(520*hs.ts+120,160),'31,139,255',a*.9);orb(hs.tx,hs.ty,Math.max(260*hs.ts+60,80),'25,227,208',a*.4)}
+  // mercek parlaması
+  const fq=t-7.5;if(fq>0&&fq<1.1){const w=Math.pow(1-fq/1.1,1.5),sg=c.createLinearGradient(0,0,W,0);sg.addColorStop(0,'rgba(120,200,255,0)');sg.addColorStop(.5,`rgba(190,235,255,${.9*w})`);sg.addColorStop(1,'rgba(120,200,255,0)');c.fillStyle=sg;c.fillRect(0,700-3-4*w,W,6+8*w)}
+  let fl=0;[[5.1,.45,.4],[7.5,.55,.5],[9.4,.1,.3],[19.6,.1,.3],[20.5,.2,.4]].forEach(([ft,a,d])=>{const q=t-ft;if(q>0&&q<d)fl+=a*Math.pow(1-q/d,2)});
+  if(fl>.005){c.fillStyle=`rgba(150,210,255,${fl})`;c.fillRect(0,0,W,H)}
+  if(t<.5){c.fillStyle=`rgba(0,0,0,${1-t/.5})`;c.fillRect(0,0,W,H)}
+}
+
+/* ---------------- film greni ---------------- */
+(function(){
+  const g=document.createElement('canvas');g.width=g.height=256;const x=g.getContext('2d'),d=x.createImageData(256,256);
+  const r=mulberry(7);for(let i=0;i<d.data.length;i+=4){const v=r()*255;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255}
+  x.putImageData(d,0,0);$('#grain').style.backgroundImage=`url(${g.toDataURL()})`;
+})();
+
+/* ---------------- ana render ---------------- */
+const S=[$('#s1'),$('#s2'),$('#s3'),$('#s4')];
+function setScene(el,show,op,sc,tx,ty){el.style.visibility=show?'visible':'hidden';if(show){el.style.opacity=op.toFixed(3);el.style.transform=`translate(${(tx||0).toFixed(1)}px,${(ty||0).toFixed(1)}px) scale(${sc.toFixed(4)})`;el.style.transformOrigin='540px 960px'}}
+let lastGrain=-1;
+function render(t){
+  drawFX(t);
+  const v1=t<5.8;let sh=[0,0];if(v1)sh=renderLock(t);
+  setScene(S[0],v1,1-prog(t,5.3,5.8),1,sh[0],sh[1]);
+  const v2=t>=5.4&&t<9.4;setScene(S[1],v2,1,1);
+  if(v2){runText(ASK,t,5.6,{st:.035,ex:7.3,exSt:.01,exMode:'fall'});runText(SUB,t,8.6,{st:.026,ex:8.95,exSt:.008,exMode:'fall'})}
+  // logo + MK OPS
+  const hs=hudState(t),tp=t-7.6;
+  if(tp<0){tile.style.opacity=0}else{
+    const s=hs.ts*lerp(1.5,1,eOut(prog(tp,0,.9))),bl=(1-clamp(tp/.9))*18;
+    tile.style.opacity=clamp(tp*6).toFixed(2);tile.style.filter=bl>.4?`blur(${bl.toFixed(1)}px)`:'none';
+    tile.style.transform=`translate(${hs.tx.toFixed(1)}px,${hs.ty.toFixed(1)}px) scale(${s.toFixed(4)})`;
+  }
+  runText(WM,t,8.1,{st:.08});
+  WM.el.style.transform=`translate(${(hs.wx-540).toFixed(1)}px,${(hs.wy-WMF*.5).toFixed(1)}px) scale(${hs.ws.toFixed(4)})`;
+  // 3 soru, 3 cevap
+  const v3=t>=9.3&&t<19.95;setScene(S[2],v3,1,1);if(v3)renderQ(t);
+  // kapanış
+  const v4=t>=19.5;setScene(S[3],v4,1,1);
+  if(v4){
+    runText(TAG,t,19.95,{st:.035});
+    runText(UR,t,21.5,{st:.035});
+    const cp=t-21.2;
+    if(cp<0)cta.style.display='none';else{
+      const bl=t>22.0?.5+.5*Math.sin((t-22.0)*6.5):0;
+      cta.style.display='flex';const s=Math.max(.001,spring(cp*1.6));cta.style.transform=`scale(${(s*(1+.02*bl)).toFixed(3)})`;cta.style.opacity=clamp(cp*8).toFixed(2);
+      cta.style.filter=`brightness(${(1+.22*bl).toFixed(3)})`;
+      cta.style.boxShadow=`0 20px ${80+40*bl}px rgba(31,139,255,${(.5+.35*bl).toFixed(2)}),0 0 0 2px rgba(255,255,255,.25) inset`;
+      ctaSh.style.left=lerp(-30,115,prog(t,21.6,22.0))+'%';
+    }
+  }
+  const gf=Math.floor(t*24);if(gf!==lastGrain){lastGrain=gf;$('#grain').style.backgroundPosition=`${(gf*97)%256}px ${(gf*61)%256}px`}
+}
+
+/* ---------------- oynatıcı ve kontroller ---------------- */
+const qs=new URLSearchParams(location.search);
+let T=0,playing=true,last=performance.now(),delay=0;
+const stage=$('#stage'),ui=$('#ui');
+function fit(){
+  const bars=document.body.classList.contains('hideui');
+  const th=bars?0:$('#hint').offsetHeight,bh=bars?0:$('#ui').offsetHeight;
+  const availH=innerHeight-th-bh;
+  const k=qs.get('olcek')==='1'?1:Math.min(innerWidth/W,availH/H);
+  stage.style.transform=`scale(${k})`;
+  stage.style.left=((innerWidth-W*k)/2)+'px';stage.style.top=(th+(availH-H*k)/2)+'px';
+}
+addEventListener('resize',fit);
+new MutationObserver(fit).observe(document.body,{attributes:true,attributeFilter:['class']});
+if(window.ResizeObserver){new ResizeObserver(fit).observe($('#ui'));new ResizeObserver(fit).observe($('#hint'))}
+let lastTap=0;stage.addEventListener('pointerup',()=>{const n=Date.now();if(n-lastTap<350){document.body.classList.remove('rec');document.body.classList.toggle('hideui')}lastTap=n});
+document.addEventListener('fullscreenchange',()=>{if(!document.body.classList.contains('rec'))document.body.classList.toggle('hideui',!!document.fullscreenElement)});
+fit();
+function upd(){$('#tm').textContent=T.toFixed(1)+' / '+DUR.toFixed(1)+' sn';$('#seek').value=T;$('#bPlay').textContent=playing?'⏸ Duraklat':'▶ Oynat'}
+function setPlay(p){playing=p;if(p&&T>=DUR)T=0;upd()}
+function restart(){T=0;playing=true;upd()}
+function recMode(on){document.body.classList.toggle('rec',on);document.body.classList.toggle('hideui',on)}
+function startRecording(){recMode(true);T=0;playing=false;delay=3;upd();setTimeout(()=>{playing=true},3000)}
+function loop(now){
+  const dt=Math.min(.1,(now-last)/1000);last=now;
+  if(playing){T+=dt;if(T>=DUR){T=DUR;playing=false}}
+  render(T);
+  if(!document.body.classList.contains('hideui'))upd();
+  requestAnimationFrame(loop);
+}
+$('#bPlay').onclick=()=>setPlay(!playing);
+$('#bRestart').onclick=restart;
+$('#bHide').onclick=()=>document.body.classList.add('hideui');
+$('#bRec').onclick=startRecording;
+$('#bFs').onclick=()=>{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()};
+$('#seek').oninput=e=>{T=parseFloat(e.target.value);playing=false;upd()};
+addEventListener('keydown',e=>{
+  if(e.code==='Space'){e.preventDefault();setPlay(!playing)}
+  else if(e.key==='r'||e.key==='R')restart();
+  else if(e.key==='h'||e.key==='H')document.body.classList.toggle('hideui');
+  else if(e.key==='k'||e.key==='K')startRecording();
+  else if(e.key==='f'||e.key==='F')$('#bFs').onclick();
+  else if(e.key==='ArrowRight'){T=Math.min(DUR,T+1)}
+  else if(e.key==='ArrowLeft'){T=Math.max(0,T-1)}
+  else if(e.key==='Escape')document.body.classList.remove('hideui','rec');
+});
+
+if(qs.has('t')){T=parseFloat(qs.get('t'))||0;playing=false}
+if(qs.get('kayit')==='1'){recMode(true);const d=parseFloat(qs.get('gecikme')||'3');T=0;playing=false;setTimeout(()=>{playing=true;last=performance.now()},d*1000)}
+if(qs.get('arayuz')==='0')document.body.classList.add('hideui');
+requestAnimationFrame(n=>{last=n;loop(n)});
+</script>
+</body>
+</html>

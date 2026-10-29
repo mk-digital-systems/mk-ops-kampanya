@@ -1,0 +1,11 @@
+Bu klasör gerçek video klipler içindir (isteğe bağlı).
+
+Aşağıdaki adlarla dikey (9:16) MP4 koyarsanız, film o sahnenin arka planı olarak klibi kullanır:
+
+  sahne1.mp4  (0-6 sn)    Şafakta şantiye, kahveli şef
+  sahne2.mp4  (6-15 sn)   Masa, telefon, evrak yakın planları
+  sahne3.mp4  (15-22 sn)  Hızlı kesmeler
+  sahne5.mp4  (30-39 sn)  Şef MK OPS ile çalışıyor, kamera geri çekiliyor
+
+Dosya yoksa film kendi çizilmiş (silüet animasyonu) sahnelerini gösterir.
+Not: klip desteği gerçek bir dosyayla test edilmedi. Ayrıntı için ../../README.md
