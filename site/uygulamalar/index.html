@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MK DIGITAL SYSTEMS · Uygulamalar</title>
+<meta name="robots" content="noindex">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#04070f;--panel:#0a1426;--line:rgba(90,170,255,.2);--txt:#eaf2ff;--mut:#8fa8cc;--cy:#19e3d0;--bl:#1f8bff}
+html{background:var(--bg)}
+body{font-family:"Inter","Segoe UI Variable Display","Segoe UI",Arial,sans-serif;color:var(--txt);min-height:100vh;background:radial-gradient(900px 500px at 15% -10%,rgba(31,139,255,.22),transparent),radial-gradient(700px 400px at 90% 0,rgba(25,227,208,.12),transparent),var(--bg);-webkit-font-smoothing:antialiased}
+header{max-width:1180px;margin:0 auto;padding:28px 20px 0;display:flex;align-items:center;gap:14px}
+header img{width:44px;height:44px;border-radius:12px;box-shadow:0 0 30px rgba(31,139,255,.5)}
+header b{font-size:20px;letter-spacing:.04em}
+header nav{margin-left:auto;display:flex;gap:6px}
+header nav a{padding:8px 15px;border-radius:999px;color:var(--mut);text-decoration:none;font:600 14px "Segoe UI",Arial,sans-serif;border:1px solid transparent}
+header nav a.on{color:var(--txt);background:rgba(90,170,255,.12);border-color:var(--line)}
+header nav a:hover{color:var(--txt)}
+.hero{max-width:1180px;margin:0 auto;padding:46px 20px 18px}
+.hero h1{font-size:clamp(32px,6vw,64px);line-height:1.05;font-weight:900;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--cy)}
+.hero p{margin-top:14px;color:var(--mut);font-size:clamp(15px,2vw,18px);max-width:640px;line-height:1.5}
+.bar{max-width:1180px;margin:18px auto 0;padding:0 20px;display:flex;gap:8px;flex-wrap:wrap}
+.bar button{all:unset;cursor:pointer;padding:9px 15px;border-radius:999px;background:rgba(90,170,255,.1);border:1px solid var(--line);color:var(--txt);font:600 14px "Segoe UI",Arial,sans-serif}
+.bar button.on{background:var(--bl);border-color:var(--bl)}
+main{max-width:1180px;margin:0 auto;padding:10px 20px 70px}
+.seri{margin-top:34px}
+.seri h2{font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.seri h2:after{content:"";flex:1;height:1px;background:var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .25s,box-shadow .25s,border-color .25s}
+.card:hover,.card:focus-visible{transform:translateY(-5px);border-color:rgba(25,227,208,.55);box-shadow:0 22px 50px rgba(0,0,0,.55),0 0 40px rgba(31,139,255,.25);outline:none}
+.th{position:relative;aspect-ratio:9/16;background:#000;overflow:hidden}
+.th img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.card:hover .th img{transform:scale(1.05)}
+.play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:rgba(4,10,24,.7);backdrop-filter:blur(6px);border:2px solid rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;opacity:.85;transition:.25s}
+.play:after{content:"";margin-left:5px;border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent}
+.card:hover .play{background:var(--bl);opacity:1;transform:scale(1.1)}
+.chip{position:absolute;left:10px;top:10px;padding:4px 10px;border-radius:999px;font:700 11px "Segoe UI",Arial,sans-serif;background:rgba(4,10,24,.75);border:1px solid var(--line)}
+.dur{position:absolute;right:10px;bottom:10px;padding:3px 9px;border-radius:8px;font:700 12px "Segoe UI",Arial,sans-serif;background:rgba(0,0,0,.7)}
+.tag{position:absolute;right:10px;top:10px;padding:4px 10px;border-radius:999px;font:700 11px "Segoe UI",Arial,sans-serif;background:#f5a524;color:#111}
+.bd{padding:14px 15px 16px}
+.bd h3{font-size:16px;line-height:1.25;font-weight:800}
+.bd p{margin-top:7px;font-size:13.5px;line-height:1.45;color:var(--mut)}
+.bd .btn{margin-top:13px;display:inline-block;padding:9px 18px;border-radius:999px;background:linear-gradient(100deg,#0b6bd6,var(--bl) 55%,var(--cy));font:800 13px "Segoe UI",Arial,sans-serif}
+.empty{color:var(--mut);padding:40px 0}
+footer{border-top:1px solid var(--line);padding:22px 20px;text-align:center;color:var(--mut);font-size:13px}
+footer a{color:var(--cy);text-decoration:none}
+@media (max-width:520px){.grid{grid-template-columns:repeat(2,1fr);gap:12px}.bd p{display:none}.bd{padding:11px}.bd h3{font-size:14px}.play{width:48px;height:48px;margin:-24px 0 0 -24px}}
+</style>
+</head>
+<body>
+<header><img src="logo.png" alt="MK DIGITAL SYSTEMS"><b>MK DIGITAL SYSTEMS</b><nav><a href="../">Filmler</a><a class="on" href="./">Uygulamalar</a></nav></header>
+<section class="hero">
+  <h1>Cebinizdeki <em>dört</em><br>uygulama.</h1>
+  <p>MK DIGITAL SYSTEMS'in Google Play'de yayında olan mobil uygulamalarının tanıtım filmi. Filmi açın; oynatma, tam ekran ve sahne seçimi kontrolleri film sayfasının içinde.</p>
+</section>
+<div class="bar" id="filtre"></div>
+<main id="liste"></main>
+<footer>© MK Digital Systems</footer>
+<script src="../filmler.js"></script>
+<script>
+const L=(window.FILMLER||[]).filter(f=>f.bolum==='uygulamalar'),liste=document.getElementById('liste'),fl=document.getElementById('filtre');
+let aktif='Tümü';
+const seriler=['Tümü',...new Set(L.map(f=>f.seri))];
+function ciz(){
+  fl.innerHTML=seriler.map(s=>`<button class="${s===aktif?'on':''}" data-s="${s}">${s}</button>`).join('');
+  fl.querySelectorAll('button').forEach(b=>b.onclick=()=>{aktif=b.dataset.s;ciz()});
+  const g={};L.filter(f=>aktif==='Tümü'||f.seri===aktif).forEach(f=>(g[f.seri]=g[f.seri]||[]).push(f));
+  const keys=Object.keys(g);
+  liste.innerHTML=keys.length?keys.map(k=>`<section class="seri"><h2>${k}</h2><div class="grid">${g[k].map(f=>`
+    <a class="card" href="${f.slug}/">
+      <div class="th"><img loading="lazy" src="../kapaklar/${f.slug}.jpg" alt="${f.baslik}"><span class="chip">${f.etiket}</span>${f.durum==='taslak'?'<span class="tag">TASLAK</span>':''}<div class="play"></div><span class="dur">${f.sure} sn · ${f.oran}</span></div>
+      <div class="bd"><h3>${f.baslik}</h3><p>${f.aciklama}</p><span class="btn">İzle</span></div>
+    </a>`).join('')}</div></section>`).join(''):'<p class="empty">Henüz film yok.</p>';
+}
+ciz();
+</script>
+</body>
+</html>

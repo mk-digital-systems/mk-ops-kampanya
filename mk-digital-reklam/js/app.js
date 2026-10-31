@@ -41,23 +41,28 @@
   }
   function stopSrc() { if (src) { try { src.stop(); } catch (e) {} src.disconnect(); src = null; } }
 
+  let perfMode = false, perfStart = 0;
+  function attachAudio() {
+    src = ctx.createBufferSource(); src.buffer = buf; src.connect(gain);
+    ctxStart = ctx.currentTime + 0.02; src.start(ctxStart, offset);
+  }
   async function play() {
     if (t >= D - 0.01) t = 0;
     $('bigplay').classList.add('hide');
-    if (!buf) $('msg').textContent = 'Ses hazırlanıyor…';
-    try { await ensureAudio(); } catch (e) { console.warn('Ses başlatılamadı', e); }
-    if (!window.ADAudio.warning) $('msg').textContent = S.durationNote || '';
     if (playing) return;
     offset = t;
-    if (ctx && buf) {
-      src = ctx.createBufferSource(); src.buffer = buf; src.connect(gain);
-      ctxStart = ctx.currentTime + 0.02; src.start(ctxStart, offset);
-    } else { ctxStart = performance.now() / 1000; }
-    playing = true; syncUI(); loop();
+    const ready = ensureAudio().catch((e) => console.warn('Ses başlatılamadı', e));   // AudioContext tıklama anında açılır
+    if (buf && ctx) { attachAudio(); playing = true; syncUI(); loop(); return; }
+    // ses henüz hazır değil: görüntü hemen başlar, ses hazır olunca mevcut saniyeye eklenir
+    perfMode = true; perfStart = performance.now() / 1000; playing = true; syncUI(); loop();
+    $('msg').textContent = 'Ses hazırlanıyor…';
+    await ready;
+    if (!window.ADAudio.warning) $('msg').textContent = S.durationNote || '';
+    if (playing && perfMode && buf && ctx) { offset = clock(); perfMode = false; attachAudio(); }
   }
-  function pause() { if (!playing) return; playing = false; stopSrc(); cancelAnimationFrame(raf); syncUI(); }
+  function pause() { if (!playing) return; playing = false; perfMode = false; stopSrc(); cancelAnimationFrame(raf); syncUI(); }
   function clock() {
-    return ctx && buf ? offset + Math.max(0, ctx.currentTime - ctxStart) : offset + performance.now() / 1000 - ctxStart;
+    return perfMode || !ctx ? offset + performance.now() / 1000 - perfStart : offset + Math.max(0, ctx.currentTime - ctxStart);
   }
   function loop() {
     if (!playing) return;

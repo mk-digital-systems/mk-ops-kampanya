@@ -4,6 +4,8 @@
    2) kapaklar/<slug>.jpg ekle (540×960)
    3) aşağıya bir kayıt ekle. Ana sayfa kendiliğinden günceller.
    seri: aynı seriye ait filmler birlikte gruplanır.
+   bolum: 'uygulamalar' yazılırsa film ana sayfada değil /uygulamalar/ sayfasında listelenir
+          ve adresi /uygulamalar/<slug>/ olur (dosyalar site/uygulamalar/<slug>/ içine konur).
    ============================================================ */
 window.FILMLER = [
   {
@@ -32,6 +34,14 @@ window.FILMLER = [
     baslik: 'DURUM NE? TEK BAKIŞTA.',
     aciklama: 'Soru–cevap formatında kısa, vurucu bir reklam.',
     sure: 25, oran: '9:16', seri: 'Ürün Tanıtımı', etiket: 'Bölüm 3', ses: false,
+    durum: 'yayinda'
+  },
+  {
+    slug: 'mk-digital-reklam',
+    bolum: 'uygulamalar',
+    baslik: 'MK DIGITAL SYSTEMS · DÖRT UYGULAMA',
+    aciklama: 'Bebeğimin İlk Yılı, MK Adisyon, Aura Günlük ve Mavi Kadrajla Öğreniyorum. Google Play’de yayında.',
+    sure: 43, oran: '9:16', seri: 'Mobil Uygulamalar', etiket: 'Tanıtım', ses: true,
     durum: 'yayinda'
   }
 ];

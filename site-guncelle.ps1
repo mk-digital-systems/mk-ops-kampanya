@@ -17,3 +17,10 @@ foreach($m in $map){
 # gorunmeyen-yuk görselleri (video klipleri siteye alınmaz; gerekirse elle ekleyin)
 Copy-Item "$r\gorunmeyen-yuk\assets\*.png" "$r\site\filmler\gorunmeyen-yuk\assets\" -Force
 "Tamam. Yeni film eklediyseniz site\filmler.js ve site\kapaklar\ güncelleyin."
+
+# MK DIGITAL SYSTEMS uygulama reklamı -> site/uygulamalar/mk-digital-reklam/ (canlı HTML sürümü)
+$ad="$r\site\uygulamalar\mk-digital-reklam"
+New-Item -ItemType Directory -Force $ad | Out-Null
+Copy-Item "$r\mk-digital-reklam\index.html" "$ad\index.html" -Force
+foreach($d in 'css','js','assets'){ Copy-Item "$r\mk-digital-reklam\$d" $ad -Recurse -Force }
+"güncellendi: uygulamalar/mk-digital-reklam/"
