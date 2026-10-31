@@ -1,0 +1,8 @@
+{
+  "name": "mk-digital-reklam-tools",
+  "private": true,
+  "type": "module",
+  "description": "Reklamı sabit 30 kare/sn ile MP4 ve WebM olarak dışa aktarır (yalnızca video çıktısı için gerekir).",
+  "scripts": { "render": "node render.mjs", "stills": "node render.mjs --stills" },
+  "dependencies": { "ffmpeg-static": "^5.2.0", "puppeteer-core": "^23.0.0" }
+}
